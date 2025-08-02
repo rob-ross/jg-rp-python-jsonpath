@@ -186,7 +186,7 @@ class JSONPointer:
 
         Raises:
             JSONPointerIndexError: When attempting to access a sequence by
-                an out of range index, unless a default is given.
+                an out-of-range index, unless a default is given.
             JSONPointerKeyError: If any mapping object along the path does not
                 contain a specified key, unless a default is given.
             JSONPointerTypeError: When attempting to resolve a non-index string
@@ -407,7 +407,7 @@ class JSONPointer:
 
         Each part is expected to be a JSON Pointer string, possibly without a
         leading slash. If a part does have a leading slash, the previous
-        pointer is ignored and a new `JSONPointer` is created, and processing of
+        pointer is ignored, and a new `JSONPointer` is created, and processing of
         remaining parts continues.
         """
         pointer = self
@@ -616,7 +616,7 @@ def resolve(
         pointer: A string representation of a JSON Pointer or an iterable of
             JSON Pointer parts.
         data: The target JSON "document" or equivalent Python objects.
-        default: A default value to return if the pointer can't be resolved.
+        default: A default value to return if the pointer can't be resolved
             against the given data.
         unicode_escape: If `True`, UTF-16 escape sequences will be decoded
             before parsing the pointer.
