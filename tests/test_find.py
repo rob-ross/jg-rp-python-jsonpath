@@ -21,14 +21,6 @@ class Case:
 
 
 TEST_CASES = [
-    # XXX: We're replacing bare property names with the "singular path selector"
-    # https://github.com/ietf-wg-jsonpath/draft-ietf-jsonpath-base/issues/522
-    # Case(
-    #     description="property key that looks like an index",
-    #     path="$[some][0]",
-    #     data={"some": {"0": "thing"}},
-    #     want=["thing"],
-    # ),
     Case(
         description="slice a mapping",
         path="$.some[0:4]",
