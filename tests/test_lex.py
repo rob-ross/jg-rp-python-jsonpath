@@ -26,16 +26,20 @@ def cases() -> List[Case]:
     # Deserialize tests/test_lex.json into Case objects with want as List[Token]
     # Build mapping from token constant names used in JSON (e.g., "TOKEN_ROOT")
     # to actual token kind values (e.g., "ROOT").
-    kind_map = {name: getattr(tokmod, name) for name in dir(tokmod) if name.startswith("TOKEN_")}
-    # Backward-compatibility alias: some test data may use PSEUDO_ROOT to mean FAKE_ROOT
+    kind_map = {name: getattr(tokmod, name) for name in dir(tokmod)
+                if name.startswith("TOKEN_")}
+    # Backward-compatibility alias: some test data may use PSEUDO_ROOT
+    # to mean FAKE_ROOT
     kind_map.setdefault("TOKEN_PSEUDO_ROOT", tokmod.TOKEN_FAKE_ROOT)
     
     def to_token(obj: Dict[str, Any]) -> Token:
         try:
             kind_value = kind_map[obj["kind"]]
         except KeyError as e:
-            raise KeyError(f"Unknown token kind in test_lex.json: {obj.get('kind')}\nKnown kinds: "
-                           f"{sorted(kind_map.keys())}") from e
+            raise KeyError(
+                f"Unknown token kind in test_lex.json: {obj.get('kind')}\n"
+                f"Known kinds: "
+                f"{sorted(kind_map.keys())}") from e
         return Token(
             kind=kind_value,
             value=obj["value"],
