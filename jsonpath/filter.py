@@ -538,7 +538,12 @@ class RelativeFilterQuery(FilterQuery):
                 return context.current
             return NodeList()
 
-        return NodeList(self.path.finditer(context.current))
+        return NodeList(
+            self.path.finditer(
+                context.current,
+                filter_context=context.extra_context,
+            )
+        )
 
     async def evaluate_async(self, context: FilterContext) -> object:
         if isinstance(context.current, str):  # TODO: refactor
@@ -551,7 +556,13 @@ class RelativeFilterQuery(FilterQuery):
             return NodeList()
 
         return NodeList(
-            [match async for match in await self.path.finditer_async(context.current)]
+            [
+                match
+                async for match in await self.path.finditer_async(
+                    context.current,
+                    filter_context=context.extra_context,
+                )
+            ]
         )
 
 
@@ -570,11 +581,22 @@ class RootFilterQuery(FilterQuery):
         return str(self.path)
 
     def evaluate(self, context: FilterContext) -> object:
-        return NodeList(self.path.finditer(context.root))
+        return NodeList(
+            self.path.finditer(
+                context.root,
+                filter_context=context.extra_context,
+            )
+        )
 
     async def evaluate_async(self, context: FilterContext) -> object:
         return NodeList(
-            [match async for match in await self.path.finditer_async(context.root)]
+            [
+                match
+                async for match in await self.path.finditer_async(
+                    context.root,
+                    filter_context=context.extra_context,
+                )
+            ]
         )
 
 
@@ -594,13 +616,21 @@ class FilterContextPath(FilterQuery):
         return "_" + path_repr[1:]
 
     def evaluate(self, context: FilterContext) -> object:
-        return NodeList(self.path.finditer(context.extra_context))
+        return NodeList(
+            self.path.finditer(
+                context.extra_context,
+                filter_context=context.extra_context,
+            )
+        )
 
     async def evaluate_async(self, context: FilterContext) -> object:
         return NodeList(
             [
                 match
-                async for match in await self.path.finditer_async(context.extra_context)
+                async for match in await self.path.finditer_async(
+                    context.extra_context,
+                    filter_context=context.extra_context,
+                )
             ]
         )
 
